@@ -1,0 +1,8 @@
+.rectangle {
+    width: 80%; /* Adjust this value as needed */
+    height: 5%; /* Adjust this value as needed */
+    background-color: #007bff; /* Example background color */
+    border-radius: 10px; /* Adjust border radius for rounded corners */
+    padding: 5px 0px 5px 3px;
+  }
+  

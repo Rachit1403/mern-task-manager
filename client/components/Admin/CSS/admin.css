@@ -4,5 +4,10 @@
     background-color: #007bff; /* Example background color */
     border-radius: 10px; /* Adjust border radius for rounded corners */
     padding: 5px 0px 5px 3px;
-  }
+    font-size: x-large;
+    display: flex; /* Use flexbox */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
+
   

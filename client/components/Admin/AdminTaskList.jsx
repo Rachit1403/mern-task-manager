@@ -1,30 +1,69 @@
 
 import { useSelector, useDispatch } from 'react-redux'
-import { decrement, increment } from '../../store/admin/adminSlice'
+import { addTask, removeTask } from '../../store/admin/adminSlice'
 import './CSS/admin.css'
+import { useState } from 'react'
 
 export function AdminTaskList() {
-  const count = useSelector((state) => state.admin.value)
+  const [newTask,setNewTask] = useState(false)
+
+  const [taskData,setTaskData] = useState({
+    id:Date.now(),
+    heading:'',
+    subTasks:[],
+    status:'InProgress',
+    count:0,
+    deadline:'',
+    priority:false,
+    createdBy:{
+      userId:123,
+      username:'abc'
+    },
+    createdAt:'not now',
+    updatedAt:'not now'
+  })
+  function handleChange(e){
+    const {name, value} = e.target
+    setTaskData({...taskData,[name]:value})
+  }
+  const tasks = useSelector((state) => state.admin.tasks)
   const dispatch = useDispatch()
 
   return (
-    <div className='rectangle'>
+    <div>
+      <ul>
+        {
+          tasks.map(task =>
+          <li key={task.id} className='rectangle'>
+            {task.heading}
+            <button onClick={()=>dispatch(removeTask(task.id))}>Remove</button>
+          </li>)
+        }
+        {
+          newTask ?<div className='rectangle'>
+            <label>ID: No Need</label><br />
+            <label>Heading:
+              <input type='text' name='heading' value={taskData.heading} onChange={handleChange}/>
+              </label><br />
+            <label>subTasks:[]</label><br />
+            <label>deadline:
+            <input type="date" name="deadline" value={taskData.deadline} onChange={handleChange}/>
+            </label><br />
+            <label>priority:
+              <select name='priority' value={taskData.priority} onChange={handleChange}>
+                <option value="">Select</option>
+                <option value="true">YES</option>
+                <option value="false">NO</option>
+              </select>
+            </label><br />
+            <button onClick={()=>dispatch(addTask(addTask(taskData)))}>Add Task</button>
+          </div>:<>Blank</>
+        }
+      </ul>
       <div>
-      {console.log('admintasklist')}
-        <button
-          aria-label="Increment value"
-          onClick={() => dispatch(increment())}
-        > 
-          Increment
-        </button>
-        <span>{count}</span>
-        <button
-          aria-label="Decrement value"
-          onClick={() => dispatch(decrement())}
-        >
-          Decrement
-        </button>
+        <button onClick={()=>setNewTask(!newTask)}>New Task</button>
       </div>
     </div>
+    
   )
 }

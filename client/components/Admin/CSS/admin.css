@@ -5,9 +5,31 @@
     border-radius: 10px; /* Adjust border radius for rounded corners */
     padding: 5px 0px 5px 3px;
     font-size: x-large;
-    display: flex; /* Use flexbox */
-    justify-content: center; /* Center horizontally */
-    
+}
+/* 
+.flex-container{
+    background-color: blue;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+ */
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: DodgerBlue;
+  }
+  
+.flex-container > div {
+    background-color: #f1f1f1;
+    margin: 10px;
 }
 
-  
+.newbutton{
+  height: 50px;
+  width: max-content;
+  justify-content: center;
+  margin: 100px 0;
+}

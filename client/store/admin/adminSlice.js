@@ -10,8 +10,8 @@ export const adminSlice = createSlice({
   initialState,
   reducers: {
     addTask:(state,action) =>{
-      state.tasks = [...state.tasks,action.payload.payload]
-      console.log(action.payload.payload);
+      state.tasks = [...state.tasks,action.payload]
+      console.log(action.payload);
       console.log(state.tasks);
     },
     removeTask:(state,action) =>{

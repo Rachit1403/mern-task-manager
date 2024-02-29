@@ -2,12 +2,18 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { addTask, removeTask } from '../../store/admin/adminSlice'
 import './CSS/admin.css'
+import './CSS/addTask.css'
 import { useState } from 'react'
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+
 
 export function AdminTaskList() {
-  const [newTask,setNewTask] = useState(false)
-
-  const [taskData,setTaskData] = useState({
+    
+  const initialTaskdata = {
     id:Date.now(),
     heading:'',
     subTasks:[],
@@ -21,47 +27,73 @@ export function AdminTaskList() {
     },
     createdAt:'not now',
     updatedAt:'not now'
-  })
-  function handleChange(e){
-    const {name, value} = e.target
-    setTaskData({...taskData,[name]:value})
   }
   const tasks = useSelector((state) => state.admin.tasks)
   const dispatch = useDispatch()
 
+  const [newTask,setNewTask] = useState(true)
+
+  const [taskData,setTaskData] = useState(initialTaskdata)
+  function handleChange(e){
+    const {name, value} = e.target
+    setTaskData({...taskData,[name]:value})
+  }
+  function handleAddTask(){
+    console.log(taskData)
+    dispatch(addTask(taskData))
+    setNewTask(!newTask)
+    setTaskData(initialTaskdata)
+  }
+  
+
   return (
     <div>
-      <ul>
+      <ul className='flex-container'>
         {
           tasks.map(task =>
-          <li key={task.id} className='rectangle'>
-            {task.heading}
-            <button onClick={()=>dispatch(removeTask(task.id))}>Remove</button>
-          </li>)
+            <Card sx={{ minWidth: 275 }} key={task.id} className='Card'>
+              <CardContent>
+                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                  {task.id}
+                </Typography>
+                <Typography variant="h5" component="div">
+                  {task.heading}
+                </Typography>
+                <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                Status: {task.status}<br />
+                </Typography>
+                <Typography variant="body2">
+                  Created By: {task.createdBy.username}<br />
+                  {task.createdAt}<br />
+                </Typography>
+              </CardContent>
+              <CardActions >
+                <Button size="small" onClick={()=>dispatch(removeTask(task.id))}>Remove</Button>
+              </CardActions>
+            </Card>)
         }
         {
-          newTask ?<div className='rectangle'>
+          newTask ?<div className='add-task'>
             <label>ID: No Need</label><br />
-            <label>Heading:
-              <input type='text' name='heading' value={taskData.heading} onChange={handleChange}/>
-              </label><br />
-            <label>subTasks:[]</label><br />
-            <label>deadline:
+            <label>Heading:</label><br />
+            <input type='text' name='heading' value={taskData.heading} onChange={handleChange}/><br />
+            <label>Sub-Tasks:[ ]</label><br />
+            <label>Deadline:
             <input type="date" name="deadline" value={taskData.deadline} onChange={handleChange}/>
             </label><br />
-            <label>priority:
-              <select name='priority' value={taskData.priority} onChange={handleChange}>
+            <label>Priority:</label>
+            <select name='priority' value={taskData.priority} onChange={handleChange} className='select-option'>
                 <option value="">Select</option>
                 <option value="true">YES</option>
                 <option value="false">NO</option>
-              </select>
-            </label><br />
-            <button onClick={()=>dispatch(addTask(addTask(taskData)))}>Add Task</button>
-          </div>:<>Blank</>
+            </select>
+            <br />
+            <button className='buttonAdd' onClick={handleAddTask}>Add Task</button>           
+          </div>:<button className='newbutton'onClick={()=>setNewTask(!newTask)}>New Task</button>
         }
       </ul>
       <div>
-        <button onClick={()=>setNewTask(!newTask)}>New Task</button>
+        hello frnds
       </div>
     </div>
     
